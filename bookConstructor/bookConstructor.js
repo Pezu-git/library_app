@@ -12,11 +12,11 @@ const lorem = new LoremIpsum({
   }
 });
 
-module.exports.bookConstructor = (title, authors, favorite, fileCover, fileName) => {
+module.exports.bookConstructor = (title, description, authors, favorite, fileCover, fileName) => {
   return {
     id: uuid(),
     title: title,
-    description: lorem.generateWords(10),
+    description: description,
     authors: authors,
     favorite: favorite,
     fileCover: fileCover,

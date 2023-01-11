@@ -1,18 +1,25 @@
 const express = require('express');
 const { v4: uuid } = require('uuid');
-const { book } = require('book');
+const { book } = require('./book/book');
 const { bookConstructor } = require('./bookConstructor/bookConstructor')
+const config = require('./config');
 
 
 const app = express();
 app.use(express.json());
 
-app.get('/api/todo', (req, res) => {
+app.post('/api/user/login', (req, res) => {
+
+  res.status(201);
+  res.json({ id: 1, mail: "test@mail.ru" });
+});
+
+app.get(config.API_URL, (req, res) => {
   res.json(book);
 });
-app.get('/api/todo/:id', (req, res) => {
+app.get(`${config.API_URL}/:id`, (req, res) => {
   const { id } = req.params;
-  const idx = todo.findIndex(el => el.id === id);
+  const idx = book.findIndex(el => el.id === id);
 
   if (idx !== -1) {
     res.json(book[idx])
@@ -24,7 +31,7 @@ app.get('/api/todo/:id', (req, res) => {
 
 });
 
-app.post('/api/todo', (req, res) => {
+app.post(config.API_URL, (req, res) => {
   const { title, authors, favorite, fileCover, fileName } = req.body;
   const newBook = bookConstructor(title, authors, favorite, fileCover, fileName)
   book.push(newBook);
@@ -33,7 +40,7 @@ app.post('/api/todo', (req, res) => {
   res.json(newBook);
 });
 
-app.put('/api/todo/:id', (req, res) => {
+app.put(`${config.API_URL}/:id`, (req, res) => {
   const { title, description, authors, favorite, fileCover, fileName } = req.body;
   const { id } = req.params;
 
@@ -53,7 +60,7 @@ app.put('/api/todo/:id', (req, res) => {
   }
 
 });
-app.delete('/api/todo', (req, res) => {
+app.delete(`${config.API_URL}/:id`, (req, res) => {
 
   const { id } = req.params;
   const idx = book.findIndex(el => el.id === id);
@@ -67,5 +74,5 @@ app.delete('/api/todo', (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT);

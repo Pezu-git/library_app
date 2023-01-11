@@ -15,47 +15,47 @@ const lorem = new LoremIpsum({
 module.exports.book = [
   {
     id: uuid(),
-    title: "string",
-    description: lorem.generateWords(10),
-    authors: "string",
-    favorite: "string",
-    fileCover: "string",
-    fileName: "string"
+    title: lorem.generateWords(8),
+    description: lorem.generateWords(20),
+    authors: lorem.generateWords(10),
+    favorite: lorem.generateWords(5),
+    fileCover: lorem.generateWords(5),
+    fileName: lorem.generateWords(10)
   },
   {
     id: uuid(),
-    title: "string",
-    description: lorem.generateWords(10),
-    authors: "string",
-    favorite: "string",
-    fileCover: "string",
-    fileName: "string"
+    title: lorem.generateWords(8),
+    description: lorem.generateWords(20),
+    authors: lorem.generateWords(10),
+    favorite: lorem.generateWords(5),
+    fileCover: lorem.generateWords(5),
+    fileName: lorem.generateWords(10)
   },
   {
     id: uuid(),
-    title: "string",
-    description: lorem.generateWords(10),
-    authors: "string",
-    favorite: "string",
-    fileCover: "string",
-    fileName: "string"
+    title: lorem.generateWords(8),
+    description: lorem.generateWords(20),
+    authors: lorem.generateWords(10),
+    favorite: lorem.generateWords(5),
+    fileCover: lorem.generateWords(5),
+    fileName: lorem.generateWords(10)
   },
   {
     id: uuid(),
-    title: "string",
-    description: lorem.generateWords(10),
-    authors: "string",
-    favorite: "string",
-    fileCover: "string",
-    fileName: "string"
+    title: lorem.generateWords(8),
+    description: lorem.generateWords(20),
+    authors: lorem.generateWords(10),
+    favorite: lorem.generateWords(5),
+    fileCover: lorem.generateWords(5),
+    fileName: lorem.generateWords(10)
   },
   {
     id: uuid(),
-    title: "string",
-    description: lorem.generateWords(10),
-    authors: "string",
-    favorite: "string",
-    fileCover: "string",
-    fileName: "string"
+    title: lorem.generateWords(8),
+    description: lorem.generateWords(20),
+    authors: lorem.generateWords(10),
+    favorite: lorem.generateWords(5),
+    fileCover: lorem.generateWords(5),
+    fileName: lorem.generateWords(10)
   },
 ]
