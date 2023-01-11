@@ -8,12 +8,14 @@ const config = require('./config');
 const app = express();
 app.use(express.json());
 
+//auth
 app.post('/api/user/login', (req, res) => {
 
   res.status(201);
   res.json({ id: 1, mail: "test@mail.ru" });
 });
 
+//get all books
 app.get(config.API_URL, (req, res) => {
   res.json(book);
 });
@@ -31,6 +33,8 @@ app.get(`${config.API_URL}/:id`, (req, res) => {
 
 });
 
+
+//create book
 app.post(config.API_URL, (req, res) => {
   const { title, authors, favorite, fileCover, fileName } = req.body;
   const newBook = bookConstructor(title, authors, favorite, fileCover, fileName)
@@ -40,6 +44,7 @@ app.post(config.API_URL, (req, res) => {
   res.json(newBook);
 });
 
+//book update
 app.put(`${config.API_URL}/:id`, (req, res) => {
   const { title, description, authors, favorite, fileCover, fileName } = req.body;
   const { id } = req.params;
@@ -60,6 +65,8 @@ app.put(`${config.API_URL}/:id`, (req, res) => {
   }
 
 });
+
+//delete book
 app.delete(`${config.API_URL}/:id`, (req, res) => {
 
   const { id } = req.params;
@@ -67,6 +74,7 @@ app.delete(`${config.API_URL}/:id`, (req, res) => {
 
   if (idx !== -1) {
     book.splice(idx, 1);
+    req.json('OK');
   }
   else {
     req.status(404);
