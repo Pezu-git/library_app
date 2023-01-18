@@ -1,5 +1,6 @@
 const { v4: uuid } = require('uuid');
 const LoremIpsum = require("lorem-ipsum").LoremIpsum;
+const path = require('path');
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -12,6 +13,9 @@ const lorem = new LoremIpsum({
   }
 });
 
+const dirFile = path.join(__dirname, '..', 'public', 'files');
+const dirImg = path.join(__dirname, '..', 'public', 'img');
+
 module.exports.book = [
   {
     id: uuid(),
@@ -19,8 +23,9 @@ module.exports.book = [
     description: lorem.generateWords(20),
     authors: lorem.generateWords(10),
     favorite: lorem.generateWords(5),
-    fileCover: lorem.generateWords(5),
-    fileName: lorem.generateWords(10)
+    fileCover: '',
+    fileName: lorem.generateWords(10),
+    fileBook: ''
   },
   {
     id: uuid(),
@@ -28,8 +33,9 @@ module.exports.book = [
     description: lorem.generateWords(20),
     authors: lorem.generateWords(10),
     favorite: lorem.generateWords(5),
-    fileCover: lorem.generateWords(5),
-    fileName: lorem.generateWords(10)
+    fileCover: '',
+    fileName: lorem.generateWords(10),
+    fileBook: ''
   },
   {
     id: uuid(),
@@ -37,8 +43,9 @@ module.exports.book = [
     description: lorem.generateWords(20),
     authors: lorem.generateWords(10),
     favorite: lorem.generateWords(5),
-    fileCover: lorem.generateWords(5),
-    fileName: lorem.generateWords(10)
+    fileCover: '',
+    fileName: lorem.generateWords(10),
+    fileBook: ''
   },
   {
     id: uuid(),
@@ -46,8 +53,9 @@ module.exports.book = [
     description: lorem.generateWords(20),
     authors: lorem.generateWords(10),
     favorite: lorem.generateWords(5),
-    fileCover: lorem.generateWords(5),
-    fileName: lorem.generateWords(10)
+    fileCover: '',
+    fileName: lorem.generateWords(10),
+    fileBook: ''
   },
   {
     id: uuid(),
@@ -55,7 +63,8 @@ module.exports.book = [
     description: lorem.generateWords(20),
     authors: lorem.generateWords(10),
     favorite: lorem.generateWords(5),
-    fileCover: lorem.generateWords(5),
-    fileName: lorem.generateWords(10)
+    fileCover: '',
+    fileName: lorem.generateWords(10),
+    fileBook: ''
   },
 ]
