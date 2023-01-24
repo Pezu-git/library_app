@@ -1,0 +1,120 @@
+<!-- Редактирование книги -->
+<%- include('../port/layout_start')%>
+<link rel="stylesheet" href="../css/style.css">
+<title>Update</title>
+  </head>
+  <body>
+
+  <div class="container container_update">
+     <div class="home_btn">
+        <a class="btn btn-primary book_info_update" href="/books/<%= book.id %>">
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        </a>
+      </div>
+      <div class="book_update_cover">
+        <img src="../<%= book.fileCover %>" alt="cover" class="lib_item_img" width="150px">
+          <label for="fileCover">
+            <i class="fa fa-pencil btn btn-danger book_upload_cover" aria-hidden="true"></i>
+          </label>
+          <input class="book_upload_cover_input" type="file" id="fileCover" name="fileCover" accept="image/*,image/jpeg,image/png" multiple>
+      </div>
+      <div class="book_info_file">
+        <div>Файл книги:  <%= book.fileName %></div>
+         <label for="fileBook">
+            <i class="fa fa-upload btn btn-danger" aria-hidden="true"></i>
+          </label>
+          <input class="book_upload_cover_input" type="file" id="fileBook" name="fileBook" multiple>
+      </div>
+    <form method="POST" action="/books/update/<%= book.id %>">
+       <div class="form-group">
+        <label for="inputAuthors">Автор</label>
+        <input
+          type="text"
+          value="<%= book.author %>"
+          name="author"
+          class="form-control"
+          id="inputAuthors"
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputTitle">Название</label>
+        <input
+          type="text"
+          value="<%= book.title %>"
+          name="title"
+          class="form-control"
+          id="inputTitle"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="inputPublishing">Издательство</label>
+        <input
+          type="text"
+          value="<%= book.publishing %>"
+          name="publishing"
+          class="form-control"
+          id="inputPublishing"
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputCount">Кол-во страниц</label>
+        <input
+          type="number"
+          value="<%= Number(book.count) %>"
+          name="count"
+          class="form-control"
+          id="inputCount"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="inputDescription">Описание</label>
+        <textarea rows="10" name="description" class="form-control" id="inputDescription">
+      <%= book.description %></textarea
+        >
+      </div>
+
+      <div class="form-group text-right">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    const btn = document.querySelector('#fileCover');
+    btn.onchange = function() {
+    let file = this.files[0];
+    if (file) {
+    let formData = new FormData();
+    formData.append('book_cover', file);
+    fetch("/books/upload_cover/<%= book.id %>",
+      {
+          body: formData,
+          method: "post"
+      });
+      window.location.reload()
+    } else {
+      console.log('Empty')
+    }
+  };
+  </script>
+  <script>
+     const btnFile = document.querySelector('#fileBook');
+    btnFile.onchange = function() {
+    let file = this.files[0];
+    if (file) {
+    let formData = new FormData();
+    formData.append('book_file', file);
+    fetch("/books/upload_file/<%= book.id %>",
+      {
+          body: formData,
+          method: "post"
+      });
+      window.location.reload()
+    } else {
+      console.log('Empty')
+    }
+  };
+  </script>
+</body>
+</html>

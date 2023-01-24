@@ -1,5 +1,5 @@
 const config = {};
 
-config.API_URL = '/api/books';
+config.API_URL = '/books';
 
 module.exports = config

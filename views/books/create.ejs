@@ -1,0 +1,95 @@
+<!-- Редактирование книги -->
+<%- include('../port/layout_start')%>
+<link rel="stylesheet" href="./css/style.css">
+<title>Book create</title>
+</head>
+<body>
+  <div class="container container_update">
+    <div class="home_btn">
+      <a class="btn btn-primary book_info_update" href="/books">
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
+      </a>
+    </div>
+    <form method="POST" action="/books/create">
+       <div class="form-group">
+        <label for="inputAuthors">Автор</label>
+        <input
+          type="text"
+          value=""
+          name="author"
+          class="form-control"
+          id="inputAuthors"
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputTitle">Название</label>
+        <input
+          type="text"
+          value=""
+          name="title"
+          class="form-control"
+          id="inputTitle"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="inputPublishing">Издательство</label>
+        <input
+          type="text"
+          value=""
+          name="publishing"
+          class="form-control"
+          id="inputPublishing"
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputCount">Кол-во страниц</label>
+        <input
+          type="number"
+          value=""
+          name="count"
+          class="form-control"
+          id="inputCount"
+        />
+      </div>
+
+        <!-- <div class="form-group">
+        <label for="fileCover">Обложка</label>
+        <input
+          type="file"
+          value=""
+          name="book_cover"
+          class="form-control"
+          id="fileCover"
+          accept="image/*,image/jpeg,image/png"
+          multiple
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="fileBook">Файл книги</label>
+        <input
+          type="file"
+          value=""
+          name="book_file"
+          class="form-control"
+          id="fileBook"
+          multiple
+        />
+      </div> -->
+
+      <div class="form-group">
+        <label for="inputDescription">Описание</label>
+        <textarea rows="5" name="description" class="form-control" id="inputDescription">
+      </textarea
+        >
+      </div>
+
+      <div class="form-group text-right">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </div>
+    </form>
+  </div>
+  
+</body>
+</html>

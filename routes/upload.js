@@ -12,8 +12,10 @@ router.post('/upload_file/:id',
     if (req.file) {
       const { id } = req.params;
       const { path } = req.file;
-      addFileToBook(path, id)
-      res.json(path);
+      const { originalname } = req.file
+      console.log(req.file)
+      addFileToBook(path, originalname, id)
+      res.json({ result: "OK", fileName: originalname });
     }
     res.json();
   });
@@ -25,8 +27,9 @@ router.post('/upload_cover/:id',
     if (req.file) {
       const { id } = req.params;
       const { path } = req.file;
+      const { originalname } = req.file
       addCoverToBook(path, id)
-      res.json(path);
+      res.json({ result: "OK", fileName: originalname });
     }
     res.json();
   });

@@ -1,0 +1,64 @@
+<!-- Информация по конкретной книге -->
+<%- include('../port/layout_start')%>
+<link rel="stylesheet" href="./css/style.css">
+<title>Book info</title>
+</head>
+<body>
+  <div class="container updt_container">
+    <div class="view_btns_container">
+      <div class="home_btn_container">
+        <div class="home_btn">
+          <a class="btn btn-primary book_info_update" type="submit" href="/books/">
+            <i class="fa fa-home" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="file_download_btn">
+          <a class="btn btn-info book_info_update" type="submit" href="/books/<%= book.id %>/download">
+            <i class="fa fa-download" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+      <div class="updt_btn">
+        <a class="btn btn-warning book_info_update" type="submit" href="/books/update/<%= book.id %>">Редактировать</a>
+      </div>
+    </div>
+   
+    <div class="book_info" id="<%= book.id %>">
+      <div class="book_info_cover">
+        <img src="<%= book.fileCover %>" alt="cover"            class="lib_item_img" width="100px">
+      </div>
+        <div class="lib_item_desc_container">
+          <table class="table table-sm">
+            <tbody>
+              <tr>
+                <th class="info_th" scope="row">Автор</th>
+                <td class="info_td"><%= book.author %></td>
+              </tr>
+              <tr>
+                <th class="info_th" scope="row">Название</th>
+                <td class="info_td"><%= book.title %></td>
+              </tr>
+              <tr>
+                <th class="info_th" scope="row">Издательство</th>
+                <td class="info_td"><%= book.publishing %></td>
+              </tr>
+              <tr>
+                <th class="info_th" scope="row">Кол-во страниц</th>
+                <td class="info_td"><%= book.count %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div> 
+      </div>
+      <div class="book_description lib_item_text">
+              <div class="info_header lib_item_text">
+                Описание
+              </div>  
+              <div class="info_body_description">
+                <%= book.description %>
+              </div>
+            </div>
+      </div>
+  </div>
+</body>
+</html>
