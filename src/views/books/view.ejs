@@ -1,6 +1,6 @@
 <!-- Информация по конкретной книге -->
 <%- include('../port/layout_start')%>
-<link rel="stylesheet" href="./css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 <title>Book info</title>
 </head>
 <body>
@@ -22,16 +22,16 @@
         <a class="btn btn-warning book_info_update" type="submit" href="/books/update/<%= book.id %>">Редактировать</a>
       </div>
     </div>
-   
     <div class="book_info" id="<%= book.id %>">
       <div class="book_info_cover">
-        <img src="<%= book.fileCover %>" alt="cover"            class="lib_item_img" width="100px">
+        <img src="<%= book.fileCover %>" alt="cover" class="lib_item_img" width="100px">
       </div>
+     
         <div class="lib_item_desc_container">
           <table class="table table-sm">
             <tbody>
               <tr>
-                <th class="info_th" scope="row">Автор</th>
+                <th class="info_th" scope="row">Автор!</th>
                 <td class="info_td"><%= book.author %></td>
               </tr>
               <tr>
@@ -51,6 +51,10 @@
         </div> 
       </div>
       <div class="book_description lib_item_text">
+        <div class="btn btn-sm btn-success">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+            <span><%= cnt %></span>
+        </div>
               <div class="info_header lib_item_text">
                 Описание
               </div>  

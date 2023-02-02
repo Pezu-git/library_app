@@ -1,6 +1,6 @@
 <!-- Редактирование книги -->
 <%- include('../port/layout_start')%>
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 <title>Update</title>
   </head>
   <body>
@@ -12,7 +12,7 @@
         </a>
       </div>
       <div class="book_update_cover">
-        <img src="../<%= book.fileCover %>" alt="cover" class="lib_item_img" width="150px">
+        <img src="<%= book.fileCover %>" alt="cover" class="lib_item_img" width="150px">
           <label for="fileCover">
             <i class="fa fa-pencil btn btn-danger book_upload_cover" aria-hidden="true"></i>
           </label>
