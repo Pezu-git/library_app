@@ -3,24 +3,16 @@ services:
     container_name: lib
     build: . 
     # image: dockerpezu/library:0.0.1
-    environment: 
-      - PORT=8080
     ports:
       - 8080:8080
-    volumes:
-      - ./src:/src
     networks:
       - mynet
-   
   counter:
     container_name: cnt
     image: dockerpezu/counter:0.0.1
     environment: 
       - PORT=8081
       - REDIS_URL=redis://storage
-      - COMPOSE_PROJECT_NAME=counter
-    ports:
-      - 8081:8081
     working_dir: /app
     volumes:
       - ./src:/src
