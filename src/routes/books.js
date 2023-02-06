@@ -11,8 +11,8 @@ const path = require("path");
 //Получить все книги
 router.get("/", async (req, res) => {
   const books = await dbBooks.getAll();
-  //Информация по просмотрам
 
+  //Информация по просмотрам
   const getCounter = async () => {
     let resArr = [];
     for (const item of books) {
