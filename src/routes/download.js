@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const dbBooks = require("../lib/dbBooks");
+const fs = require("fs");
 
 //Скачать файл книги
 router.get("/:id/download", async function (req, res) {
@@ -7,9 +8,7 @@ router.get("/:id/download", async function (req, res) {
   const book = await dbBooks.getById(id);
 
   const filePath = `public/files/${book.fileBook}`;
-  console.log(filePath);
-  if (filePath !== "") {
-    console.log(filePath);
+  if (filePath !== "" && fs.existsSync(filePath)) {
     res.download(filePath, function (err) {
       if (err) throw err;
     });

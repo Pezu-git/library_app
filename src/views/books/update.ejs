@@ -87,18 +87,19 @@
   </div>
   <script>
     const btn = document.querySelector('#fileCover');
-    btn.onchange = function(event) {
-      // event.preventDefault();
+    const coverCont = document.querySelector('.lib_item_img')
+    btn.onchange = async function(event) {
+      // event.preventDefault(event);
     let file = this.files[0];
-    console.log(file)
     if (file) {
     let formData = new FormData();
     formData.append('book_cover', file);
-    fetch("/books/upload_cover",
+    await fetch("/books/upload_cover",
       {
           body: formData,
           method: "post"
-      });
+      })
+      coverCont.src = `/img/${file.name}`
     } else {
       console.log('Empty')
     }

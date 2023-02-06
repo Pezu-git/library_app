@@ -1,12 +1,23 @@
 const router = require("express").Router();
-const { bookss } = require("../book/book");
-const { bookConstructor } = require("../lib/bookConstructor");
 const fs = require("fs");
 const { notEmpty } = require("../lib/notEmpty");
 const axios = require("axios");
 const BooksModel = require("../models/books");
 const dbBooks = require("../lib/dbBooks");
-const path = require("path");
+const { fillDB } = require("../book/book");
+
+//Начальное заполнение БД
+router.get("/fillDB", (req, res) => {
+  fillDB.forEach(async (item) => {
+    const newBook = new BooksModel(item);
+    try {
+      await newBook.save();
+    } catch (e) {
+      res.status(500).json(e);
+    }
+  });
+  res.redirect(`/books`);
+});
 
 //Получить все книги
 router.get("/", async (req, res) => {
@@ -117,8 +128,19 @@ router.post(`/update/:id`, async (req, res) => {
     fileCover,
     fileBook,
   } = req.body;
-
   const { id } = req.params;
+  console.log("fileCover:" + fileCover);
+  let cover = fileCover;
+  let file = fileBook;
+  if (fileCover === "") {
+    const book = await dbBooks.getById(id);
+    cover = book.fileCover;
+  }
+  if (fileBook === "") {
+    const book = await dbBooks.getById(id);
+    file = book.fileBook;
+  }
+
   const data = {
     title: await notEmpty({ title: title }, id),
     description: await notEmpty({ description: description }, id),
@@ -127,8 +149,8 @@ router.post(`/update/:id`, async (req, res) => {
     fileName: await notEmpty({ fileName: fileName }, id),
     publishing: await notEmpty({ publishing: publishing }, id),
     count: await notEmpty({ count: count }, id),
-    fileCover: await notEmpty({ fileCover: fileCover }, id),
-    fileBook: await notEmpty({ fileBook: fileBook }, id),
+    fileCover: cover,
+    fileBook: file,
   };
 
   await dbBooks.update(id, data);
