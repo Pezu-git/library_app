@@ -1,4 +1,11 @@
 node_modules
-mongo
-mongodb
-redis
+
+mongo/
+
+mongodb/
+
+redis/
+
+.env
+
+test/

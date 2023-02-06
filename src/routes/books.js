@@ -141,13 +141,13 @@ router.post(`/delete/:id`, async (req, res) => {
   const book = await dbBooks.getById(id);
   const cover = book.fileCover;
   const bookFile = book.fileBook;
-  if (fs.existsSync(`public/img/${cover}`)) {
+  if (cover !== "" && fs.existsSync(`public/img/${cover}`)) {
     fs.unlink(`public/img/${cover}`, (err) => {
       if (err) throw err;
       console.log("Deleted cover");
     });
   }
-  if (fs.existsSync(`public/img/${bookFile}`)) {
+  if (bookFile !== "" && fs.existsSync(`public/img/${bookFile}`)) {
     fs.unlink(`public/files/${bookFile}`, (err) => {
       if (err) throw err;
       console.log("Deleted file");
