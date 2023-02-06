@@ -5,6 +5,7 @@ const axios = require("axios");
 const BooksModel = require("../models/books");
 const dbBooks = require("../lib/dbBooks");
 const { fillDB } = require("../book/book");
+const config = require("../config");
 
 //Начальное заполнение БД
 router.get("/fillDB", (req, res) => {
@@ -28,7 +29,7 @@ router.get("/", async (req, res) => {
     let resArr = [];
     for (const item of books) {
       await axios
-        .get(process.env.COUNTER_URL + `${item.title}`)
+        .get(config.COUNTER_URL + `${item.title}`)
         .then(function (response) {
           resArr.push(response.data);
         })
@@ -56,7 +57,7 @@ router.get(`/:id`, async (req, res) => {
   const book = await dbBooks.getById(id);
   const title = book.title;
   axios
-    .get(process.env.COUNTER_URL + `incr/${title}`)
+    .get(config.COUNTER_URL + `incr/${title}`)
     .then(function (response) {
       const data = response.data;
       let cnt = 0;

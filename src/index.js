@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, ".." + "/public")));
-console.log(process.env.PORT);
+console.log(config.PORT);
 //auth
 app.use("/login", loginRouter);
 
@@ -41,7 +41,7 @@ async function startServer(PORT, URL_DB) {
   }
 }
 
-const URL_DB = process.env.URL_DB;
-const PORT = process.env.PORT || 5000;
+const URL_DB = config.URL_DB;
+const PORT = config.PORT || 5000;
 
 startServer(PORT, URL_DB);

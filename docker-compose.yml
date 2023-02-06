@@ -4,11 +4,11 @@ services:
     build: . 
     # image: dockerpezu/library:0.0.1
     ports:
-      - 8080:8080
+      - 5001:5001
     environment: 
-      - PORT=5002
-      - COUNTER_URL=http://cnt:8081/counter/
-      - URL_DB=mongodb://localhost:27017/libraryDB
+      - PORT=5001
+      - COUNTER_URL=http://cnt:5002/counter/
+      - URL_DB=mongodb://mongo:27017/libraryDB
     networks:
       - mynet
   counter:
@@ -22,12 +22,39 @@ services:
       - ./src:/src
     depends_on:
       - storage
+      - mongo
+      - mongo_express
     networks:
       - mynet
   storage:
     image: redis
     volumes:
       - ./redis/data:/data
+    networks:
+      - mynet
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_DATABASE=db
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb/data:/data/db
+    networks:
+      - mynet
+        
+  mongo_express:
+    container_name: mongo_express
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
     networks:
       - mynet
 networks:
