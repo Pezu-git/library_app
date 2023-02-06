@@ -53,12 +53,12 @@
         />
       </div>
 
-        <!-- <div class="form-group">
+        <div class="form-group">
         <label for="fileCover">Обложка</label>
         <input
           type="file"
           value=""
-          name="book_cover"
+          name="fileCover"
           class="form-control"
           id="fileCover"
           accept="image/*,image/jpeg,image/png"
@@ -71,12 +71,12 @@
         <input
           type="file"
           value=""
-          name="book_file"
+          name="fileBook"
           class="form-control"
           id="fileBook"
           multiple
         />
-      </div> -->
+      </div>
 
       <div class="form-group">
         <label for="inputDescription">Описание</label>
@@ -91,5 +91,41 @@
     </form>
   </div>
   
+  <script>
+    const btn = document.querySelector('#fileCover');
+    btn.onchange = function(event) {
+      event.preventDefault()
+    let file = this.files[0];
+    if (file) {
+    let formData = new FormData();
+    formData.append('book_cover', file);
+    fetch("/books/upload_cover",
+      {
+          body: formData,
+          method: "post"
+      });
+    } else {
+      console.log('Empty')
+    }
+  };
+  </script>
+  <script>
+     const btnFile = document.querySelector('#fileBook');
+    btnFile.onchange = function(event) {
+      event.preventDefault()
+    let file = this.files[0];
+    if (file) {
+    let formData = new FormData();
+    formData.append('book_file', file);
+    fetch("/books/upload_file",
+      {
+          body: formData,
+          method: "post"
+      });
+    } else {
+      console.log('Empty')
+    }
+  };
+  </script>
 </body>
 </html>

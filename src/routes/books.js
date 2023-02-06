@@ -1,18 +1,23 @@
 const router = require("express").Router();
-const { book } = require("../book/book");
+const { bookss } = require("../book/book");
 const { bookConstructor } = require("../lib/bookConstructor");
 const fs = require("fs");
 const { notEmpty } = require("../lib/notEmpty");
 const axios = require("axios");
+const BooksModel = require("../models/books");
+const dbBooks = require("../lib/dbBooks");
+const path = require("path");
 
 //Получить все книги
 router.get("/", async (req, res) => {
+  const books = await dbBooks.getAll();
   //Информация по просмотрам
+
   const getCounter = async () => {
     let resArr = [];
-    for (const item of book) {
+    for (const item of books) {
       await axios
-        .get(`http://cnt:8081/counter/${item.title}`)
+        .get(process.env.COUNTER_URL + `${item.title}`)
         .then(function (response) {
           resArr.push(response.data);
         })
@@ -23,8 +28,9 @@ router.get("/", async (req, res) => {
     return resArr;
   };
   const response = await getCounter();
-  await res.render("books/index", {
-    books: book,
+
+  res.render("books/index", {
+    books: books,
     counter: response,
   });
 });
@@ -36,29 +42,20 @@ router.get("/create", (req, res) => {
 //Получить книгу по id
 router.get(`/:id`, async (req, res) => {
   const { id } = req.params;
-  const idx = book.findIndex((el) => el.id === id);
-  const title = book[idx].title;
-
+  const book = await dbBooks.getById(id);
+  const title = book.title;
   axios
-    .get(`http://cnt:8081/counter/incr/${title}`)
+    .get(process.env.COUNTER_URL + `incr/${title}`)
     .then(function (response) {
-      console.log(response.data);
       const data = response.data;
       let cnt = 0;
       if (data.result === "OK") {
         cnt = data.count;
       }
-      if (idx !== -1) {
-        res.render("books/view", {
-          book: book[idx],
-          cnt: cnt,
-        });
-      } else {
-        res.status(404);
-        res.render("errors/error404", {
-          title: "Страница не найдена",
-        });
-      }
+      res.render("books/view", {
+        book: book,
+        cnt: cnt,
+      });
     })
     .catch(function (error) {
       console.log(error);
@@ -66,7 +63,7 @@ router.get(`/:id`, async (req, res) => {
 });
 
 //Добавление книги
-router.post("/create/", (req, res) => {
+router.post("/create/", async (req, res) => {
   const {
     title,
     description,
@@ -78,93 +75,86 @@ router.post("/create/", (req, res) => {
     publishing,
     count,
   } = req.body;
-  const newBook = bookConstructor(
+  const newBook = new BooksModel({
     title,
-    description,
     author,
+    description,
+    publishing,
+    count,
     favorite,
     fileCover,
     fileName,
     fileBook,
-    publishing,
-    count
-  );
-
-  book.push(newBook);
-  res.status(201);
-
-  res.redirect(`/books`);
+  });
+  try {
+    await newBook.save();
+    res.status(201);
+    res.redirect(`/books`);
+  } catch (e) {
+    res.status(500).json(e);
+  }
 });
 
 //Страница изменения
-router.get(`/update/:id`, (req, res) => {
+router.get(`/update/:id`, async (req, res) => {
   const { id } = req.params;
-  const idx = book.findIndex((el) => el.id === id);
-
-  if (idx !== -1) {
-    res.render("books/update", {
-      book: book[idx],
-    });
-  } else {
-    res.status(404);
-    res.render("errors/error404", {
-      title: "Страница не найдена",
-    });
-  }
+  const book = await dbBooks.getById(id);
+  res.render("books/update", {
+    book: book,
+  });
 });
 
 //Изменение данных книги
-router.post(`/update/:id`, (req, res) => {
-  const { title, description, author, favorite, fileName, publishing, count } =
-    req.body;
-  const { id } = req.params;
-  const idx = book.findIndex((el) => el.id == id);
+router.post(`/update/:id`, async (req, res) => {
+  const {
+    title,
+    description,
+    author,
+    favorite,
+    fileName,
+    publishing,
+    count,
+    fileCover,
+    fileBook,
+  } = req.body;
 
-  if (idx !== -1) {
-    book[idx] = {
-      ...book[idx],
-      title: notEmpty({ title: title }, idx),
-      description: notEmpty({ description: description }, idx),
-      author: notEmpty({ author: author }, idx),
-      favorite: notEmpty({ favorite: favorite }, idx),
-      fileName: notEmpty({ fileName: fileName }, idx),
-      publishing: notEmpty({ publishing: publishing }, idx),
-      count: notEmpty({ count: count }, idx),
-    };
-    res.redirect(`/books/${id}`);
-  } else {
-    res.status(404);
-    res.render("errors/error404", {
-      title: "Страница не найдена",
-    });
-  }
+  const { id } = req.params;
+  const data = {
+    title: await notEmpty({ title: title }, id),
+    description: await notEmpty({ description: description }, id),
+    author: await notEmpty({ author: author }, id),
+    favorite: await notEmpty({ favorite: favorite }, id),
+    fileName: await notEmpty({ fileName: fileName }, id),
+    publishing: await notEmpty({ publishing: publishing }, id),
+    count: await notEmpty({ count: count }, id),
+    fileCover: await notEmpty({ fileCover: fileCover }, id),
+    fileBook: await notEmpty({ fileBook: fileBook }, id),
+  };
+
+  await dbBooks.update(id, data);
+  res.redirect(`/books/${id}`);
 });
 
 //Удалить книгу
-router.post(`/delete/:id`, (req, res) => {
+router.post(`/delete/:id`, async (req, res) => {
   const { id } = req.params;
-  const idx = book.findIndex((el) => el.id == id);
-
-  if (idx !== -1) {
-    console.log(book[idx]);
-    const cover = book[idx].fileCover;
-    fs.unlink(`public/${cover}`, (err) => {
+  const book = await dbBooks.getById(id);
+  const cover = book.fileCover;
+  const bookFile = book.fileBook;
+  if (fs.existsSync(`public/img/${cover}`)) {
+    fs.unlink(`public/img/${cover}`, (err) => {
       if (err) throw err;
       console.log("Deleted cover");
     });
-    const bookFile = book[idx].fileBook;
-    fs.unlink(bookFile, (err) => {
+  }
+  if (fs.existsSync(`public/img/${bookFile}`)) {
+    fs.unlink(`public/files/${bookFile}`, (err) => {
       if (err) throw err;
       console.log("Deleted file");
     });
-    book.splice(idx, 1);
-    res.redirect(`/books`);
-  } else {
-    res.status(404);
-    res.render("errors/error404", {
-      title: "Страница не найдена",
-    });
   }
+  await dbBooks.delete(id);
+  res.redirect(`/books`);
 });
 
 module.exports = router;

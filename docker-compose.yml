@@ -5,13 +5,17 @@ services:
     # image: dockerpezu/library:0.0.1
     ports:
       - 8080:8080
+    environment: 
+      - PORT=5002
+      - COUNTER_URL=http://cnt:8081/counter/
+      - URL_DB=mongodb://localhost:27017/libraryDB
     networks:
       - mynet
   counter:
     container_name: cnt
     image: dockerpezu/counter:0.0.1
     environment: 
-      - PORT=8081
+      - PORT=5002
       - REDIS_URL=redis://storage
     working_dir: /app
     volumes:
@@ -23,7 +27,7 @@ services:
   storage:
     image: redis
     volumes:
-      - ./data:/data
+      - ./redis/data:/data
     networks:
       - mynet
 networks:
@@ -31,6 +35,3 @@ networks:
     driver: bridge
     ipam:
       driver: default
-
-      
-  

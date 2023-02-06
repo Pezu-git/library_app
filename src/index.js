@@ -5,6 +5,7 @@ const booksRouter = require("./routes/books");
 const uploadRouter = require("./routes/upload");
 const fileDownload = require("./routes/download");
 const path = require("path");
+const mongoose = require("mongoose");
 // const errorMiddleware = require('./middleware/errors');
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set("views", path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, ".." + "/public")));
-
+console.log(process.env.PORT);
 //auth
 app.use("/login", loginRouter);
 
@@ -27,8 +28,20 @@ app.use(config.API_URL, uploadRouter);
 app.use(config.API_URL, fileDownload);
 
 // app.use(errorMiddleware);
+mongoose.set("strictQuery", true);
 
+async function startServer(PORT, URL_DB) {
+  try {
+    await mongoose.connect(URL_DB);
+    app.listen(PORT, () => {
+      console.log(`Library listening port ${PORT}`);
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+const URL_DB = process.env.URL_DB;
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`counter listening port ${process.env.PORT}`);
-});
+
+startServer(PORT, URL_DB);
