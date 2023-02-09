@@ -6,6 +6,11 @@ mongodb/
 
 redis/
 
+test/
+
 .env
 
-test/
+.docker-compose.test.yml
+
+
+

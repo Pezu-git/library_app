@@ -6,7 +6,7 @@ const uploadRouter = require("./routes/upload");
 const fileDownload = require("./routes/download");
 const path = require("path");
 const mongoose = require("mongoose");
-// const errorMiddleware = require('./middleware/errors');
+const errorMiddleware = require("./middleware/errors");
 const app = express();
 
 app.use(express.json());
@@ -29,6 +29,8 @@ app.use(config.API_URL, fileDownload);
 
 // app.use(errorMiddleware);
 mongoose.set("strictQuery", true);
+
+app.use(errorMiddleware);
 
 async function startServer(PORT, URL_DB) {
   try {

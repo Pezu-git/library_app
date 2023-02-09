@@ -10,7 +10,9 @@ router.get("/:id/download", async function (req, res) {
   const filePath = `public/files/${book.fileBook}`;
   if (filePath !== "" && fs.existsSync(filePath)) {
     res.download(filePath, function (err) {
-      if (err) throw err;
+      res.render("errors/error404", {
+        title: "Файл не найден",
+      });
     });
   } else {
     res.render("errors/error404", {

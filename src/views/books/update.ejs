@@ -99,6 +99,7 @@
           body: formData,
           method: "post"
       })
+      console.log(file)
       coverCont.src = `/img/${file.name}`
     } else {
       console.log('Empty')
