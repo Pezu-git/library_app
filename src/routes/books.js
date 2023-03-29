@@ -3,7 +3,9 @@ const fs = require("fs");
 const { notEmpty } = require("../lib/notEmpty");
 const axios = require("axios");
 const BooksModel = require("../models/books");
+const ChatsModel = require("../models/chats");
 const dbBooks = require("../lib/dbBooks");
+const dbChats = require("../lib/dbChats");
 const { fillDB } = require("../book/book");
 const config = require("../config");
 
@@ -55,6 +57,8 @@ router.get("/create", (req, res) => {
 router.get(`/:id`, async (req, res) => {
   const { id } = req.params;
   const book = await dbBooks.getById(id);
+  const chat = await dbChats.getByRoom(id);
+  console.log(chat);
   const title = book.title;
   axios
     .get(config.COUNTER_URL + `incr/${title}`)
@@ -67,6 +71,7 @@ router.get(`/:id`, async (req, res) => {
       res.render("books/view", {
         book: book,
         cnt: cnt,
+        chat: chat,
       });
     })
     .catch(function (error) {
@@ -101,7 +106,7 @@ router.post("/create/", async (req, res) => {
   try {
     await newBook.save();
     res.status(201);
-    res.redirect(`/books`);
+    res.redirect(`/`);
   } catch (e) {
     res.status(500).json(e);
   }
@@ -114,6 +119,24 @@ router.get(`/update/:id`, async (req, res) => {
   res.render("books/update", {
     book: book,
   });
+});
+
+//Сохранение сообщения
+router.post(`/chat/create`, async (req, res) => {
+  const { room, sender, message } = req.body;
+  console.log(req.body);
+  const newChat = new ChatsModel({
+    room,
+    sender,
+    message,
+  });
+  try {
+    await newChat.save();
+    res.status(201);
+    res.redirect(`/`);
+  } catch (e) {
+    res.status(500).json(e);
+  }
 });
 
 //Изменение данных книги
@@ -130,7 +153,6 @@ router.post(`/update/:id`, async (req, res) => {
     fileBook,
   } = req.body;
   const { id } = req.params;
-  console.log("fileCover:" + fileCover);
   let cover = fileCover;
   let file = fileBook;
   if (fileCover === "") {
@@ -155,7 +177,7 @@ router.post(`/update/:id`, async (req, res) => {
   };
 
   await dbBooks.update(id, data);
-  res.redirect(`/books/${id}`);
+  res.redirect(`/${id}`);
 });
 
 //Удалить книгу
@@ -177,7 +199,7 @@ router.post(`/delete/:id`, async (req, res) => {
     });
   }
   await dbBooks.delete(id);
-  res.redirect(`/books`);
+  res.redirect(`/`);
 });
 
 module.exports = router;

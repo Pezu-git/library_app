@@ -2,11 +2,13 @@
 <%- include('../port/layout_start')%>
     <link rel="stylesheet" href="/css/style.css">
     <title>Main</title>
+    <!-- <script src="../socket.io/socket.io"></script> -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
   </head>
   <body>
     <div class="container">
       <div>
-        <a class="btn btn-sm btn-primary" href="/books/create">
+        <a class="btn btn-sm btn-primary" href="/create">
           <i class="fa fa-plus" aria-hidden="true"></i>
         </a>
       </div>
@@ -30,9 +32,9 @@
             <div class="btn btn-sm btn-success" id="<%= item.title %>">
               <i class="fa fa-eye" aria-hidden="true"></i>
               <%= counter[idx].count %>
-              
-            </div>
-            <a class="btn btn-sm btn-info" href="/books/<%= item.id %>">
+            </div> 
+            <!-- <button class="btn btn-sm btn-info info_btn" id="<%= item.id %>"></button> -->
+            <a class="btn btn-sm btn-info" href="/<%= item.id %>">
               <i class="fa fa-info" aria-hidden="true"></i>
             </a>
             <form action="/books/delete/<%= item.id %>" method="POST" class="d-inline">
@@ -43,6 +45,7 @@
           </td>
         </tr>
         <% }) %>
+        <ul id="events"></ul>
       </tbody>
     </table>
     </div>
@@ -54,5 +57,14 @@
           integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
           crossorigin="anonymous">
     </script>
+  <script>
+
+// var socket = io.connect('/');
+// console.log(socket)
+
+
+
+
+  </script>
   </body>
 </html>
