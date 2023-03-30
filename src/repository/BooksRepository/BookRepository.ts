@@ -1,10 +1,12 @@
-import { IBook } from "../../interfaces/Book";
+import { IBook } from './../../interfaces/Book';
 import { dbBooks } from "../../lib/dbBooks";
+import { injectable } from "inversify";
+
 
 // interface Request {
-//     body: Book,
+//     body: IBook,
 // }
-
+@injectable()
 export abstract class BookRepository {
 
     async createBook(book: any) {
@@ -17,7 +19,7 @@ export abstract class BookRepository {
     };
     async getBook(id: string) {
         try {
-            return await dbBooks.findById(id)
+            return await dbBooks.getById(id)
         } catch (e) {
             console.log(e)
         }

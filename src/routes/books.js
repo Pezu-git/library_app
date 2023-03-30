@@ -7,7 +7,10 @@ const ChatsModel = require("../models/chats");
 const dbBooks = require("../lib/dbBooks");
 const dbChats = require("../lib/dbChats");
 const { fillDB } = require("../book/book");
-const config = require("../config");
+const config = require("../config.js");
+// import { container } from "../containers/container";
+// const container = require("../containers/container");
+// import { BookRepository } from "../repository/BooksRepository/BookRepository";
 
 //Начальное заполнение БД
 router.get("/fillDB", (req, res) => {
@@ -58,6 +61,9 @@ router.get(`/:id`, async (req, res) => {
   const { id } = req.params;
   const book = await dbBooks.getById(id);
   const chat = await dbChats.getByRoom(id);
+  // const repo = container.get(BooksRepository);
+  // const bookr = await repo.getBook(req.params.id);
+  // console.log(bookr);
   console.log(chat);
   const title = book.title;
   axios

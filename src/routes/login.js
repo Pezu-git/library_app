@@ -1,8 +1,7 @@
-var router = require('express').Router();
-
+var router = require("express").Router();
 
 //Авторизация
-router.post('/', (req, res) => {
+router.post("/", (req, res) => {
   res.status(201);
   res.json({ id: 1, mail: "test@mail.ru" });
 });
