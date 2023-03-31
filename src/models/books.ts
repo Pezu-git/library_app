@@ -1,4 +1,4 @@
-// const { Schema, model } = require("mongoose");
+import { IBook } from '../interfaces/IBook';
 import { Schema, model } from 'mongoose'
 
 const booksShema = new Schema({
@@ -43,5 +43,4 @@ const booksShema = new Schema({
         require: "",
     },
 });
-export const BooksModel = model('Books', booksShema)
-// module.exports = model("Books", booksShema);
+export const BooksModel = model<IBook>('Books', booksShema)

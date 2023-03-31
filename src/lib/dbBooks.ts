@@ -1,43 +1,39 @@
+import { IBook } from '../interfaces/IBook';
 import { BooksModel } from './../models/books';
 
 const dbBooks = {
-    getAll: async () => {
+    createBook: async (newBook: IBook) => {
         try {
-            const books = await BooksModel.find().select("-__v");
-            return books;
-            // res.json(todo);
+            await newBook.save();
         } catch (e) {
-            return e;
+
         }
     },
 
-    getById: async (id: string) => {
-        try {
-            const book = await BooksModel.findById(id).select("-__v");
-            return book;
-        } catch (e) {
-            return e;
-        }
+    getAll: async (): Promise<IBook[]> => {
+        // try {
+        return await BooksModel.find().select("-__v");
+        // res.json(todo);
+        // } catch (e) {
+        //     return (e as Error).message;
+        // }
     },
 
-    update: async (id: string, data: Object) => {
-        console.log(data);
-        try {
-            await BooksModel.findByIdAndUpdate(id, data);
-            // res.redirect(`/api/todo/${id}`);
-            console.log("OK");
-        } catch (e) {
-            return e;
-        }
+    getById: async (id: string): Promise<IBook> => {
+
+        return await BooksModel.findById(id).select("-__v");
+
     },
 
-    delete: async (id: string) => {
-        try {
-            await BooksModel.deleteOne({ _id: id });
-            console.log("OK");
-        } catch (e) {
-            return e;
-        }
+    update: async (id: string, data: Object): Promise<void> => {
+
+        await BooksModel.findByIdAndUpdate(id, data);
+
+    },
+
+    delete: async (id: string): Promise<void> => {
+        await BooksModel.deleteOne({ _id: id });
+
     },
 };
 
